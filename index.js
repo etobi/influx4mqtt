@@ -36,8 +36,7 @@ var mqtt = require('mqtt').connect(config.url, {will: {topic: config.name + '/co
 mqtt.publish(config.name + '/connected', '2');
 
 var subscriptions = [ // Todo command line param
-    '+/status/#',
-    '+/connected'
+    '#',
 ];
 
 console.log('connecting InfluxDB', config['influx-host']);
@@ -85,18 +84,10 @@ mqtt.on('message', function (topic, payload, msg) {
 
     payload = payload.toString();
 
-    var seriesName = topic.replace(/^([^\/]+)\/status\/(.+)/, '$1//$2');
+    var seriesName = topic;
 
-    var value;
-
-    try {
-        var tmp = JSON.parse(payload);
-        value = tmp.val;
-        timestamp = tmp.ts || timestamp;
-    } catch (e) {
-        value = payload;
-    }
-    var valueFloat = parseFloat(value);
+    var value = payload;
+	var valueFloat = parseFloat(value);
 
     if (value === true || value === 'true') {
         value = '1.0';
@@ -110,7 +101,7 @@ mqtt.on('message', function (topic, payload, msg) {
         if (!value.match(/\./)) value = value + '.0';
     }
 
-    //console.log(seriesName, value, timestamp, tmp.ts);
+    console.log(seriesName, value, timestamp, tmp.ts);
     if (!buffer[seriesName]) buffer[seriesName] = [];
     buffer[seriesName].push([{value: value, time: timestamp}]);
     bufferCount += 1;
@@ -120,7 +111,7 @@ mqtt.on('message', function (topic, payload, msg) {
 
 function write() {
     if (!bufferCount) return;
-    //console.log('write', bufferCount);
+    console.log('write', bufferCount);
     influx.writeSeries(buffer, {}, function (err, res) {
         if (err) console.error('error', err);
     });
@@ -128,4 +119,4 @@ function write() {
     bufferCount = 0;
 }
 
-setInterval(write, 30000); // todo command line param
+setInterval(write, 10000); // todo command line param
