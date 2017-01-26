@@ -101,7 +101,7 @@ mqtt.on('message', function (topic, payload, msg) {
         if (!value.match(/\./)) value = value + '.0';
     }
 
-    console.log(seriesName, value, timestamp, tmp.ts);
+    console.log(seriesName, value, timestamp);
     if (!buffer[seriesName]) buffer[seriesName] = [];
     buffer[seriesName].push([{value: value, time: timestamp}]);
     bufferCount += 1;
