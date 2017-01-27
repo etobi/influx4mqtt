@@ -51,6 +51,7 @@ var influx = require('influx')({
 
 var buffer = {};
 var bufferCount = 0;
+var ignoreRetain = true;
 
 var connected;
 mqtt.on('connect', function () {
@@ -78,7 +79,7 @@ mqtt.on('error', function () {
 
 mqtt.on('message', function (topic, payload, msg) {
 
-    if (msg.retain) return;
+    if (ignoreRetain && msg.retain) return;
 
     var timestamp = (new Date()).getTime();
 
@@ -117,6 +118,7 @@ function write() {
     });
     buffer = {};
     bufferCount = 0;
+    ignoreRetain = false;
 }
 
 setInterval(write, 10000); // todo command line param
