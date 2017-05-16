@@ -19,33 +19,42 @@ var config = require('yargs')
     })
     .default({
         'u': 'mqtt://127.0.0.1',
-        'n': 'influx',
+        'n': 'influx4mqtt',
         'v': 'info',
         'influx': false,
         'influx-host': '127.0.0.1',
         'influx-port': 8086,
-        'influx-db': 'mqtt'
+		'influx-username': 'root',
+		'influx-password': 'root',
+        'influx-db': 'mqtt',
+		'subscriptions': ['#'],
+		'maxBufferCount': 1000,
+		'writeBufferInterval': 10000
     })
     .config('config')
     .version(pkg.name + ' ' + pkg.version + '\n', 'version')
     .help('help')
     .argv;
-
+	
 console.log('mqtt connecting', config.url);
-var mqtt = require('mqtt').connect(config.url, {will: {topic: config.name + '/connected', payload: '0'}});
+var mqtt = require('mqtt')
+	.connect(config.url, {
+		will: {
+			topic: config.name + '/connected',
+			payload: '0'
+		}
+	});
 mqtt.publish(config.name + '/connected', '2');
 
-var subscriptions = [ // Todo command line param
-    '#',
-];
+var subscriptions = config.subscriptions;
 
 console.log('connecting InfluxDB', config['influx-host']);
 var influx = require('influx')({
     host: config['influx-host'] || '127.0.0.1',
     port: config['influx-port'] || 8086, // optional, default 8086
-    protocol: 'http', // optional, default 'http' // todo command line param
-    //username: 'dbuser', // todo command line param
-    //password: 'f4ncyp4ass', // todo command line param
+    protocol: config['influx-protocol'] || 'http', // optional, default 'http'
+    username: config['influx-username'] || null,
+    password: config['influx-password'] || null,
     database: config['influx-db'] || 'mqtt'
 });
 
@@ -59,8 +68,12 @@ mqtt.on('connect', function () {
     console.log('mqtt connected ' + config.url);
 
     subscriptions.forEach(function (subs) {
-        console.log('mqtt subscribe ' + subs);
-        mqtt.subscribe(subs);
+		var topic = subs;
+		if (typeof subs == 'object') {
+			topic = subs.topic;
+		}
+        console.log('mqtt subscribe ' + topic);
+        mqtt.subscribe(topic);
     });
 });
 
@@ -76,6 +89,9 @@ mqtt.on('error', function () {
     console.error('mqtt error ' + config.url);
 });
 
+var matchTopic = function(actualTopic, subscribedTopic) {
+	return actualTopic.match(subscribedTopic.replace("+", "[^/]+").replace("#", ".+"));
+}
 
 mqtt.on('message', function (topic, payload, msg) {
 
@@ -85,9 +101,29 @@ mqtt.on('message', function (topic, payload, msg) {
 
     payload = payload.toString();
 
-    var seriesName = topic;
+	var subscriptionConfig = null;
+	subscriptions.forEach(function (subscription) {
+		if (typeof subscription == "string" && matchTopic(topic, subscription)) {
+			subscriptionConfig = {topic: subscription};
+		} else if (typeof subscription == "object" && matchTopic(topic, subscription.topic)) {
+			subscriptionConfig = subscription;
+		}
+	});
 
+    var seriesName = topic;
     var value = payload;
+	
+	if (value.substr(0, 1) == '{' && subscriptionConfig.key) {
+		var json = JSON.parse(value);
+		value = json[subscriptionConfig.key];
+	}
+	
+	if (typeof value == 'string' && value.match(/^[0-9]{10}\.[0-9]{3}:[0-9]+(\.[0-9]+)?$/)) {
+		var split = value.split(':');
+		timestamp = split[0].replace('.', '');
+		value = split[1];
+	}
+	
 	var valueFloat = parseFloat(value);
 
     if (value === true || value === 'true') {
@@ -102,23 +138,23 @@ mqtt.on('message', function (topic, payload, msg) {
         if (!value.match(/\./)) value = value + '.0';
     }
 
-    console.log(seriesName, value, timestamp);
     if (!buffer[seriesName]) buffer[seriesName] = [];
     buffer[seriesName].push([{value: value, time: timestamp}]);
     bufferCount += 1;
-    if (bufferCount > 1000) write(); // todo command line param
+    if (bufferCount > config.maxBufferCount) write(); 
 
 });
 
 function write() {
     if (!bufferCount) return;
-    console.log('write', bufferCount);
     influx.writeSeries(buffer, {}, function (err, res) {
-        if (err) console.error('error', err);
+        if (err) {
+			console.error('error', err);
+		}
     });
     buffer = {};
     bufferCount = 0;
     ignoreRetain = false;
 }
 
-setInterval(write, 10000); // todo command line param
+setInterval(write, config.writeBufferInterval); // todo command line param
