@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var pkg = require('./package.json');
+process.title = pkg.name;
 var config = require('yargs')
 		.usage(pkg.name + ' ' + pkg.version + '\n' + pkg.description + '\n\nUsage: $0 [options]')
 		.describe('v', 'possible values: "error", "warn", "info", "debug"')
@@ -36,7 +37,7 @@ var config = require('yargs')
 		.help('help')
 		.argv;
 
-console.log('mqtt connecting', config.url);
+console.log('connecting mqtt', config.url, '...');
 var mqtt = require('mqtt')
 		.connect(config.url, {
 			will: {
@@ -48,7 +49,7 @@ mqtt.publish(config.name + '/connected', '2');
 
 var subscriptions = config.subscriptions;
 
-console.log('connecting InfluxDB', config['influx-host']);
+console.log('connecting InfluxDB', config['influx-host'], '...');
 var influx = require('influx')({
 	host: config['influx-host'] || '127.0.0.1',
 	port: config['influx-port'] || 8086, // optional, default 8086
@@ -93,56 +94,71 @@ var matchTopic = function (actualTopic, subscribedTopic) {
 	return actualTopic.match(subscribedTopic.replace("+", "[^/]+").replace("#", ".+"));
 };
 
+var transform = {
+	"lcntemp": function (value) {
+		return (value - 1000) / 10;
+	}
+};
+
 mqtt.on('message', function (topic, payload, msg) {
 
 	if (ignoreRetain && msg.retain) return;
 
 	var timestamp = (new Date()).getTime();
 
-	payload = payload.toString();
+	var value = payload.toString();
 
-	var subscriptionConfig = null;
-	subscriptions.forEach(function (subscription) {
-		if (typeof subscription == "string" && matchTopic(topic, subscription)) {
-			subscriptionConfig = {topic: subscription};
-		} else
-			if (typeof subscription == "object" && matchTopic(topic, subscription.topic)) {
-				subscriptionConfig = subscription;
-			}
-	});
+	var subscriptionConfig = config.subscriptionConfig[topic] || {measurement: null};
+	var measurement = subscriptionConfig.measurement || null;
 
-	var seriesName = topic;
-	var value = payload;
-
-	if (value.substr(0, 1) == '{' && subscriptionConfig.key) {
-		var json = JSON.parse(value);
-		value = json[subscriptionConfig.key];
+	if (measurement == null) {
+		console.log('skip', topic);
+		return;
 	}
 
+	if (subscriptionConfig['@todo']) {
+		console.log('TODO', topic, subscriptionConfig['@todo']);
+	}
+
+	// handle json
+	if (value.substr(0, 1) == '{' && subscriptionConfig.jsonkey) {
+		var json = JSON.parse(value);
+		value = json[subscriptionConfig.jsonkey];
+	}
+
+	// handle timestamp:value
 	if (typeof value == 'string' && value.match(/^[0-9]{10}\.[0-9]{3}:[0-9]+(\.[0-9]+)?$/)) {
 		var split = value.split(':');
 		timestamp = split[0].replace('.', '');
 		value = split[1];
 	}
 
-	var valueFloat = parseFloat(value);
+	// handle custom transform
+	if (subscriptionConfig.transform) {
+		if (subscriptionConfig.transform == 'lcntemp') {
+			value = transform.lcntemp(value);
+		}
+	}
 
+	var valueFloat = parseFloat(value);
 	if (value === true || value === 'true') {
 		value = '1.0';
-	} else
+	} else {
 		if (value === false || value === 'false') {
 			value = '0.0';
-		} else
+		} else {
 			if (isNaN(valueFloat)) {
-				return; // FIXME do we need strings? Creating a field as string leads to errors when trying to write float on it. Can we expect topics to be of the same type always?
-				value = '"' + value + '"';
+				return;
 			} else {
 				value = '' + valueFloat;
 				if (!value.match(/\./)) value = value + '.0';
 			}
+		}
+	}
 
-	if (!buffer[seriesName]) buffer[seriesName] = [];
-	buffer[seriesName].push([{value: value, time: timestamp}]);
+	console.log('write', measurement + ': ' + value);
+	if (!buffer[measurement]) buffer[measurement] = [];
+	buffer[measurement].push([{value: value, time: timestamp}]);
 	bufferCount += 1;
 	if (bufferCount > config.maxBufferCount) write();
 

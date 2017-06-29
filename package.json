@@ -4,7 +4,7 @@
   "description": "Insert incoming MQTT values into InfluxDB. Follows mqtt-smarthome architecture.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "author": "Sebastian 'hobbyquaker' Raff <hq@ccu.io>",
   "license": "MIT",
