@@ -1,0 +1,16 @@
+host='igor-pi'
+path='/usr/local/influx4mqtt/'
+
+[deploy:local]
+git push origin master
+scp ./config.json $SSH_HOST:/etc/influx4mqtt.json
+
+[deploy]
+git checkout master
+git pull
+npm install
+sudo bash -c "pgrep influx4mqtt && killall influx4mqtt || echo "
+sudo bash -c "cd /usr/local/influx4mqtt/ ; /usr/local/bin/node ./index.js --config /etc/influx4mqtt.json > /var/log/influx4mqtt.log 2>&1 &"
+
+[status]
+ps -ef | grep influx4mqtt

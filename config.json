@@ -1,0 +1,580 @@
+{
+  "url": "mqtt://192.168.50.88",
+  "influx": false,
+  "influx-host": "127.0.0.1",
+  "influx-port": 8086,
+  "influx-username": null,
+  "influx-password": null,
+  "influx-db": "mqtt",
+  
+  "subscriptions": [
+    "james/lcn/#",
+    "tele/esp8266/18fe34fea07a/value",
+	"+/status/w1/#",
+    "tele/sonoff/+/ENERGY"
+  ],
+  
+  "subscriptionConfig": {
+    "james/lcn/LCN/variable/0/11/11": {
+      "measurement": "lcn/other/attic/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/10/3": {
+      "measurement": "lcn/other/attic/light/1"
+    },
+    "james/lcn/LCN/sensor/0/22/2": {
+      "measurement": "lcn/other/attic/window"
+    },
+	
+    "james/lcn/LCN/variable/0/200/2": {
+      "measurement": "lcn/other/garage/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/200/3": {
+      "measurement": "lcn/other/garage/light/1"
+    },
+    "james/lcn/LCN/relay/0/200/5": {
+      "measurement": "lcn/other/garage/light/2"
+    },
+    "james/lcn/LCN/sensor/0/200/4": {
+      "measurement": "lcn/other/garage/motion"
+    },
+    "james/lcn/LCN/sensor/0/200/5": {
+      "measurement": "lcn/other/garage/portal/opened"
+    },
+    "james/lcn/LCN/sensor/0/200/6": {
+      "measurement": "lcn/other/garage/portal/closed"
+    },
+    "james/lcn/LCN/sensor/0/200/7": {
+      "measurement": "lcn/other/garage/window"
+    },
+    "james/lcn/LCN/sensor/0/200/8": {
+      "measurement": "lcn/other/garage/door"
+    },
+	
+    "james/lcn/LCN/variable/0/12/2": {
+      "measurement": "lcn/other/outside/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/variable/0/12/3": {
+      "measurement": "lcn/other/outside/lux"
+    },
+    "james/lcn/SUN/azimuth": {
+      "measurement": "lcn/other/outside/sun/azimuth"
+    },
+    "james/lcn/SUN/elevation": {
+      "measurement": "lcn/other/outside/sun/elevation"
+    },
+    "james/lcn/LCN/sensor/0/11/8": {
+      "measurement": "lcn/other/outside/motion"
+    },
+    "james/lcn/LCN/output/0/11/2": {
+      "measurement": "lcn/other/outside/light/entry"
+    },
+    "james/lcn/LCN/relay/0/200/4": {
+      "measurement": "lcn/other/outside/light/garageFront"
+    },
+    "james/lcn/LCN/relay/0/200/6": {
+      "measurement": "lcn/other/outside/light/garageBack"
+    },
+    "james/lcn/LCN/relay/0/13/5": {
+      "measurement": "lcn/other/outside/light/kitchen"
+    },
+    "james/lcn/LCN/output/0/11/1": {
+      "measurement": "lcn/other/outside/light/patio"
+    },
+    "james/lcn/LCN/relay/0/14/3": {
+      "measurement": "lcn/other/outside/light/bay"
+    },
+    "james/lcn/LCN/relay/0/13/4": {
+      "measurement": "lcn/other/outside/light/gable"
+    },
+    "james/lcn/LCN/relay/0/200/7": {
+      "measurement": "lcn/other/outside/power/front"
+    },
+    "james/lcn/LCN/relay/0/200/8": {
+      "measurement": "lcn/other/outside/power/back"
+    },
+    "james/lcn/LCN/relay/0/12/1": {
+      "measurement": "lcn/other/outside/socket"
+    },
+	
+    "james/lcn/LCN/sensor/0/12/1": {
+      "measurement": "lcn/other/entrance/door/locked"
+    },
+    "james/lcn/VAR/entrance/open": {
+      "measurement": "lcn/other/entrance/door/open"
+    },
+	
+    "james/lcn/LCN/sensor/0/12/2": {
+      "measurement": "lcn/other/side/door/locked"
+    },
+	
+    "james/lcn/LCN/sensor/0/12/3": {
+      "measurement": "lcn/other/facility/bell"
+    },
+    "james/lcn/LCN/sensor/0/11/5": {
+      "measurement": "lcn/other/facility/heating/failure"
+    },
+    "james/lcn/LCN/sensor/0/21/4": {
+      "measurement": "lcn/other/facility/firealert"
+    },
+    "james/lcn/LCN/relay/0/10/6": {
+      "measurement": "lcn/other/facility/circulation"
+    },
+	
+    "james/lcn/VAR/temp/28-0114656a05ff": {
+      "measurement": "lcn/other/facility/temp/ventilation/zu_aussen",
+      "transform": "lcntemp"
+    },
+    "james/lcn/VAR/temp/28-0114656b0fff": {
+      "measurement": "lcn/other/facility/temp/ventilation/ab_innen",
+      "transform": "lcntemp"
+    },
+    "james/lcn/VAR/temp/28-041469d051ff": {
+      "measurement": "lcn/other/facility/temp/ventilation/ab_aussen",
+      "transform": "lcntemp"
+    },
+    "james/lcn/VAR/temp/28-041469d10eff": {
+      "measurement": "lcn/other/facility/temp/ventilation/zu_innen",
+      "transform": "lcntemp"
+    },
+	
+    "james/lcn/LCN/variable/0/10/2": {
+      "measurement": "lcn/1stfloor/hallway/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/sensor/0/10/4": {
+      "measurement": "lcn/1stfloor/hallway/motion"
+    },
+    "james/lcn/LCN/regulator/0/10/1": {
+      "measurement": "lcn/1stfloor/hallway/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/14/1": {
+      "measurement": "lcn/1stfloor/hallway/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/11/5": {
+      "measurement": "lcn/1stfloor/hallway/socket/1"
+    },
+    "james/lcn/LCN/output/0/30/1": {
+      "measurement": "lcn/1stfloor/hallway/light/1"
+    },
+    "james/lcn/LCN/output/0/30/2": {
+      "measurement": "lcn/1stfloor/hallway/light/stairs"
+    },
+	
+    "james/lcn/LCN/variable/0/14/2": {
+      "measurement": "lcn/1stfloor/wc/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/sensor/0/14/4": {
+      "measurement": "lcn/1stfloor/wc/motion"
+    },
+    "james/lcn/LCN/output/0/40/1": {
+      "measurement": "lcn/1stfloor/wc/light/1"
+    },
+    "james/lcn/LCN/output/0/40/2": {
+      "measurement": "lcn/1stfloor/wc/light/2"
+    },
+    "james/lcn/LCN/relay/0/10/4": {
+      "measurement": "lcn/1stfloor/wc/heating/towel"
+    },
+    "james/lcn/LCN/regulator/0/14/1": {
+      "measurement": "lcn/1stfloor/wc/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/11/1": {
+      "measurement": "lcn/1stfloor/wc/heating/relay"
+    },
+	
+    "james/lcn/LCN/variable/0/11/12": {
+      "measurement": "lcn/1stfloor/fireplace/temp",
+      "transform": "lcntemp"
+    },
+	
+    "james/lcn/LCN/variable/0/13/2": {
+      "measurement": "lcn/1stfloor/kitchen/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/sensor/0/13/4": {
+      "measurement": "lcn/1stfloor/kitchen/motion"
+    },
+    "james/lcn/LCN/output/0/60/1": {
+      "measurement": "lcn/1stfloor/kitchen/light/ceiling"
+    },
+    "james/lcn/LCN/relay/0/13/8": {
+      "measurement": "lcn/1stfloor/kitchen/light/wall"
+    },
+    "james/lcn/LCN/relay/0/14/2": {
+      "measurement": "lcn/1stfloor/kitchen/socket/1"
+    },
+    "james/lcn/LCN/sensor/0/20/4": {
+      "measurement": "lcn/1stfloor/kitchen/window/window"
+    },
+    "james/lcn/LCN/sensor/0/12/4": {
+      "measurement": "lcn/1stfloor/kitchen/window/door"
+    },
+    "james/lcn/LCN/regulator/0/13/1": {
+      "measurement": "lcn/1stfloor/kitchen/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/11/4": {
+      "measurement": "lcn/1stfloor/kitchen/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/20/1": {
+      "measurement": "lcn/1stfloor/kitchen/shutter/window/move"
+    },
+    "james/lcn/LCN/relay/0/20/2": {
+      "measurement": "lcn/1stfloor/kitchen/shutter/window/direction"
+    },
+    "james/lcn/LCN/relay/0/20/3": {
+      "measurement": "lcn/1stfloor/kitchen/shutter/door/move"
+    },
+    "james/lcn/LCN/relay/0/20/4": {
+      "measurement": "lcn/1stfloor/kitchen/shutter/door/direction"
+    },
+	
+    "james/lcn/LCN/variable/0/50/2": {
+      "measurement": "lcn/1stfloor/utilityroom/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/sensor/0/50/4": {
+      "measurement": "lcn/1stfloor/utilityroom/motion"
+    },
+    "james/lcn/LCN/output/0/50/1": {
+      "measurement": "lcn/1stfloor/utilityroom/light/1"
+    },
+	
+    "james/lcn/LCN/relay/0/10/1": {
+      "measurement": "lcn/1stfloor/stairs/light/1"
+    },
+	
+    "james/lcn/LCN/variable/0/61/2": {
+      "measurement": "lcn/1stfloor/living/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/61/1": {
+      "measurement": "lcn/1stfloor/living/light/1"
+    },
+    "james/lcn/LCN/output/0/61/2": {
+      "measurement": "lcn/1stfloor/living/light/2"
+    },
+    "james/lcn/LCN/relay/0/11/6": {
+      "measurement": "lcn/1stfloor/living/socket/1"
+    },
+    "james/lcn/LCN/relay/0/11/8": {
+      "measurement": "lcn/1stfloor/living/socket/2"
+    },
+    "james/lcn/LCN/relay/0/14/4": {
+      "measurement": "lcn/1stfloor/living/socket/3"
+    },
+    "james/lcn/LCN/regulator/0/61/1": {
+      "measurement": "lcn/1stfloor/living/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/11/3": {
+      "measurement": "lcn/1stfloor/living/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/20/5": {
+      "measurement": "lcn/1stfloor/living/shutter/bayside/move"
+    },
+    "james/lcn/LCN/relay/0/20/6": {
+      "measurement": "lcn/1stfloor/living/shutter/bayside/direction"
+    },
+    "james/lcn/LCN/relay/0/21/7": {
+      "measurement": "lcn/1stfloor/living/shutter/bayleft/move"
+    },
+    "james/lcn/LCN/relay/0/21/8": {
+      "measurement": "lcn/1stfloor/living/shutter/bayleft/direction"
+    },
+    "james/lcn/LCN/relay/0/20/7": {
+      "measurement": "lcn/1stfloor/living/shutter/bayright/move"
+    },
+    "james/lcn/LCN/relay/0/20/8": {
+      "measurement": "lcn/1stfloor/living/shutter/bayright/direction"
+    },
+    "james/lcn/LCN/relay/0/21/1": {
+      "measurement": "lcn/1stfloor/living/shutter/patio/move"
+    },
+    "james/lcn/LCN/relay/0/21/2": {
+      "measurement": "lcn/1stfloor/living/shutter/patio/direction"
+    },
+    "james/lcn/LCN/relay/0/21/3": {
+      "measurement": "lcn/1stfloor/living/shutter/gable/move"
+    },
+    "james/lcn/LCN/relay/0/21/4": {
+      "measurement": "lcn/1stfloor/living/shutter/gable/direction"
+    },
+    "james/lcn/LCN/sensor/0/20/1": {
+      "measurement": "lcn/1stfloor/living/window/bayleft"
+    },
+    "james/lcn/LCN/sensor/0/20/2": {
+      "measurement": "lcn/1stfloor/living/window/bayright"
+    },
+    "james/lcn/LCN/sensor/0/21/1": {
+      "measurement": "lcn/1stfloor/living/window/patio"
+    },
+    "james/lcn/LCN/sensor/0/21/2": {
+      "measurement": "lcn/1stfloor/living/window/gable"
+    },
+	
+    "james/lcn/LCN/variable/0/70/2": {
+      "measurement": "lcn/1stfloor/office/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/70/1": {
+      "measurement": "lcn/1stfloor/office/light/1"
+    },
+    "james/lcn/LCN/relay/0/11/7": {
+      "measurement": "lcn/1stfloor/office/socket/1"
+    },
+    "james/lcn/LCN/regulator/0/70/1": {
+      "measurement": "lcn/1stfloor/office/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/11/2": {
+      "measurement": "lcn/1stfloor/office/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/21/5": {
+      "measurement": "lcn/1stfloor/office/shutter/move"
+    },
+    "james/lcn/LCN/relay/0/21/6": {
+      "measurement": "lcn/1stfloor/office/shutter/direction"
+    },
+    "james/lcn/LCN/sensor/0/21/3": {
+      "measurement": "lcn/1stfloor/office/window"
+    },
+	
+    "james/lcn/LCN/variable/0/100/2": {
+      "measurement": "lcn/2ndfloor/hallway/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/sensor/0/100/4": {
+      "measurement": "lcn/2ndfloor/hallway/motion"
+    },
+    "james/lcn/LCN/sensor/0/22/4": {
+      "measurement": "lcn/2ndfloor/hallway/window"
+    },
+    "james/lcn/LCN/output/0/100/1": {
+      "measurement": "lcn/2ndfloor/hallway/light/1"
+    },
+	
+    "james/lcn/LCN/output/0/110/1": {
+      "measurement": "lcn/2ndfloor/wash/light/1"
+    },
+    "james/lcn/LCN/output/0/110/2": {
+      "measurement": "lcn/2ndfloor/wash/light/2"
+    },
+    "james/lcn/LCN/sensor/0/22/3": {
+      "measurement": "lcn/2ndfloor/wash/window"
+    },
+	
+    "james/lcn/LCN/variable/0/120/2": {
+      "measurement": "lcn/2ndfloor/bath/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/120/1": {
+      "measurement": "lcn/2ndfloor/bath/light/1"
+    },
+    "james/lcn/LCN/output/0/120/2": {
+      "measurement": "lcn/2ndfloor/bath/light/2"
+    },
+    "james/lcn/LCN/relay/0/13/7": {
+      "measurement": "lcn/2ndfloor/bath/socket/1"
+    },
+    "james/lcn/LCN/regulator/0/120/1": {
+      "measurement": "lcn/2ndfloor/bath/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/12/2": {
+      "measurement": "lcn/2ndfloor/bath/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/10/5": {
+      "measurement": "lcn/2ndfloor/bath/heating/towel"
+    },
+    "james/lcn/LCN/relay/0/22/1": {
+      "measurement": "lcn/2ndfloor/bath/shutter/move"
+    },
+    "james/lcn/LCN/relay/0/22/2": {
+      "measurement": "lcn/2ndfloor/bath/shutter/direction"
+    },
+    "james/lcn/LCN/sensor/0/21/8": {
+      "measurement": "lcn/2ndfloor/bath/window"
+    },
+    "james/lcn/LCN/sensor/0/120/4": {
+      "measurement": "lcn/2ndfloor/bath/motion"
+    },
+	
+    "james/lcn/LCN/variable/0/130/2": {
+      "measurement": "lcn/2ndfloor/parents/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/130/1": {
+      "measurement": "lcn/2ndfloor/parents/light/1"
+    },
+    "james/lcn/LCN/relay/0/13/6": {
+      "measurement": "lcn/2ndfloor/parents/socket/1"
+    },
+    "james/lcn/LCN/regulator/0/130/1": {
+      "measurement": "lcn/2ndfloor/parents/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/12/3": {
+      "measurement": "lcn/2ndfloor/parents/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/22/3": {
+      "measurement": "lcn/2ndfloor/parents/shutter/move"
+    },
+    "james/lcn/LCN/relay/0/22/4": {
+      "measurement": "lcn/2ndfloor/parents/shutter/direction"
+    },
+    "james/lcn/LCN/sensor/0/21/5": {
+      "measurement": "lcn/2ndfloor/parents/window"
+    },
+	
+    "james/lcn/LCN/variable/0/140/2": {
+      "measurement": "lcn/2ndfloor/office/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/140/1": {
+      "measurement": "lcn/2ndfloor/office/light/1"
+    },
+    "james/lcn/LCN/regulator/0/140/1": {
+      "measurement": "lcn/2ndfloor/office/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/12/4": {
+      "measurement": "lcn/2ndfloor/office/heating/relay"
+    },
+    "james/lcn/LCN/sensor/0/22/1": {
+      "measurement": "lcn/2ndfloor/office/window"
+    },
+	
+    "james/lcn/LCN/variable/0/150/2": {
+      "measurement": "lcn/2ndfloor/childnorth/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/150/1": {
+      "measurement": "lcn/2ndfloor/childnorth/light/1"
+    },
+    "james/lcn/LCN/relay/0/12/7": {
+      "measurement": "lcn/2ndfloor/childnorth/socket/1"
+    },
+    "james/lcn/LCN/regulator/0/150/1": {
+      "measurement": "lcn/2ndfloor/childnorth/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/12/5": {
+      "measurement": "lcn/2ndfloor/childnorth/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/22/5": {
+      "measurement": "lcn/2ndfloor/childnorth/shutter/move"
+    },
+    "james/lcn/LCN/relay/0/22/6": {
+      "measurement": "lcn/2ndfloor/childnorth/shutter/direction"
+    },
+    "james/lcn/LCN/sensor/0/21/6": {
+      "measurement": "lcn/2ndfloor/childnorth/window"
+    },
+	
+    "james/lcn/LCN/variable/0/160/2": {
+      "measurement": "lcn/2ndfloor/childsouth/temp",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/output/0/160/1": {
+      "measurement": "lcn/2ndfloor/childsouth/light/1"
+    },
+    "james/lcn/LCN/relay/0/12/8": {
+      "measurement": "lcn/2ndfloor/childsouth/socket/1"
+    },
+    "james/lcn/LCN/regulator/0/160/1": {
+      "measurement": "lcn/2ndfloor/childsouth/heating/aim",
+      "transform": "lcntemp"
+    },
+    "james/lcn/LCN/relay/0/12/6": {
+      "measurement": "lcn/2ndfloor/childsouth/heating/relay"
+    },
+    "james/lcn/LCN/relay/0/22/7": {
+      "measurement": "lcn/2ndfloor/childsouth/shutter/move"
+    },
+    "james/lcn/LCN/relay/0/22/8": {
+      "measurement": "lcn/2ndfloor/childsouth/shutter/direction"
+    },
+    "james/lcn/LCN/sensor/0/21/7": {
+      "measurement": "lcn/2ndfloor/childsouth/window"
+    },
+	
+    "james/lcn/LCN/variable/0/10/5": {
+      "measurement": "lcn/counter/oven"
+    },
+    "james/lcn/LCN/variable/0/10/6": {
+      "measurement": "lcn/counter/washing"
+    },
+    "james/lcn/LCN/variable/0/10/7": {
+      "measurement": "lcn/counter/fridge"
+    },
+    "james/lcn/LCN/variable/0/10/8": {
+      "measurement": "lcn/counter/cooker"
+    },
+    "james/lcn/LCN/variable/0/20/5": {
+      "measurement": "lcn/counter/freezer"
+    },
+    "james/lcn/LCN/variable/0/20/6": {
+      "measurement": "lcn/counter/server"
+    },
+    "james/lcn/LCN/variable/0/20/7": {
+      "measurement": "lcn/counter/dishwasher"
+    },
+    "james/lcn/LCN/variable/0/20/8": {
+      "measurement": "lcn/counter/dryer"
+    },
+    "james/lcn/LCN/variable/0/14/5": {
+    },
+    "james/lcn/LCN/variable/0/14/6": {
+      "measurement": "lcn/counter/water"
+    },
+    "james/lcn/LCN/variable/0/14/7": {
+      "measurement": "lcn/counter/gas"
+    },
+    "james/lcn/LCN/variable/0/14/8": {
+      "measurement": "lcn/counter/ventilation"
+    },
+    "igor-pi/status/w1/28-0316649d88ff": {
+      "measurement": "1wire/temp/igor-pi/1"
+    },
+    "igor-pi/status/w1/28-8000001ebb2a": {
+      "measurement": "1wire/temp/igor-pi/2"
+    },
+    "greenhouse-pi/status/w1/28-0315501b8dff": {
+      "measurement": "1wire/temp/greenhouse-pi/1"
+    },
+    "greenhouse-pi/status/w1/28-0315502de2ff": {
+      "measurement": "1wire/temp/greenhouse-pi/2"
+    },
+    "greenhouse-pi/status/w1/28-03155036b8ff": {
+      "measurement": "1wire/temp/greenhouse-pi/3"
+    },
+    "greenhouse-pi/status/w1/10-000802ddee51": {
+      "measurement": "1wire/temp/greenhouse-pi/4"
+    },
+    "entry-pi/status/w1/10-000802ddf73b": {
+      "measurement": "1wire/temp/entry-pi/1"
+    },
+    "entry-pi/status/w1/28-011465a570ff": {
+      "measurement": "1wire/temp/entry-pi/2"
+    },
+    "tele/esp8266/18fe34fea07a/value": {
+      "jsonkey": "Power",
+      "measurement": "tele/dirk/notathome"
+    },
+    "tele/sonoff/7233/ENERGY": {
+      "jsonkey": "Power",
+      "measurement": "tele/dirk/power"
+    },
+    "tele/sonoff/7530/ENERGY": {
+      "jsonkey": "Power",
+      "measurement": "tele/silvia/power"
+    }
+  }
+}
